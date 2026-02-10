@@ -9,7 +9,7 @@ public abstract class Producto {
     protected int id;
     protected double precio;
     protected int stock;
-    protected Marca marca; // Relación: El "marca" de la tabla celular
+    protected Marca marca;  
 
     public Producto() {}
 

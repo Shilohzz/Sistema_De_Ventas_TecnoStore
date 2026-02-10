@@ -2,10 +2,14 @@ C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\com
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\CONTROLADOR\Conexion.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Celular.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Cliente.java
+C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\DAO\CelularDAO.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\DAO\ClienteDAO.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\DAO\EmpleadoDAO.java
+C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\DAO\MarcaDAO.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Empleado.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\ItemVenta.java
+C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Marca.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Persona.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\PersonaFactory.java
+C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Producto.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Venta.java
