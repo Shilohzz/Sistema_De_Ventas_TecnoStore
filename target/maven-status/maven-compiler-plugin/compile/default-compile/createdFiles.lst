@@ -11,6 +11,8 @@ MODELO\ItemVenta.class
 MODELO\Persona.class
 MODELO\PersonaFactory.class
 MODELO\DAO\MarcaDAO.class
+CONTROLADOR\VentaController.class
 MODELO\DAO\ClienteDAO.class
+VISTA\MenuPrincipal.class
 MODELO\Cliente.class
 MODELO\Producto.class

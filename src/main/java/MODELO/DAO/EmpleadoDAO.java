@@ -34,69 +34,82 @@ public class EmpleadoDAO {
         try {
             connection.setAutoCommit(false);
 
-             
-            PreparedStatement psPersona = connection.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
-            psPersona.setString(1, emp.getNombre());
-            psPersona.setString(2, emp.getTipo_identificacion());
-            psPersona.setInt(3, emp.getIdentificacion());
-            psPersona.setString(4, emp.getEmail());
-            psPersona.setInt(5, emp.getTelefono());
-            psPersona.setString(6, emp.getSexo());
-            psPersona.setString(7, emp.getDireccion());
-            psPersona.executeUpdate();
-
-             
-            ResultSet rs = psPersona.getGeneratedKeys();
             int idGenerado = 0;
-            if (rs.next()) {
-                idGenerado = rs.getInt(1);
+            
+            try (PreparedStatement psPersona = connection.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS)) {
+                psPersona.setString(1, emp.getNombre());
+                psPersona.setString(2, emp.getTipo_identificacion());
+                psPersona.setInt(3, emp.getIdentificacion());
+                psPersona.setString(4, emp.getEmail());
+                psPersona.setInt(5, emp.getTelefono());
+                psPersona.setString(6, emp.getSexo());
+                psPersona.setString(7, emp.getDireccion());
+                psPersona.executeUpdate();
+
+                try (ResultSet rs = psPersona.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        idGenerado = rs.getInt(1);
+                    }
+                }
             }
 
-            
-            PreparedStatement psEmpleado = connection.prepareStatement(sqlEmpleado);
-            psEmpleado.setInt(1, idGenerado);
-            psEmpleado.setString(2, emp.getCargo());
-            psEmpleado.setDouble(3, emp.getSalario());
-            psEmpleado.setInt(4, emp.getCodigoEmp());
-            psEmpleado.executeUpdate();
+             
+            try (PreparedStatement psEmpleado = connection.prepareStatement(sqlEmpleado)) {
+                psEmpleado.setInt(1, idGenerado);
+                psEmpleado.setString(2, emp.getCargo());
+                psEmpleado.setDouble(3, emp.getSalario());
+                psEmpleado.setInt(4, emp.getCodigoEmp());
+                psEmpleado.executeUpdate();
+            }
 
             connection.commit();
             return true;
         } catch (SQLException e) {
-            try { connection.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            try { 
+                connection.rollback(); 
+            } catch (SQLException ex) { 
+                ex.printStackTrace(); 
+            }
             System.err.println("Error al registrar empleado: " + e.getMessage());
             return false;
+        } finally {
+            try { 
+                connection.setAutoCommit(true); 
+            } catch (SQLException e) { 
+                e.printStackTrace(); 
+            }
         }
     }
-    
     
     public List<Empleado> obtenerTodos() {
-    List<Empleado> lista = new ArrayList<>();
-    String sql = "SELECT p.*, e.cargo, e.salario, e.codigo " +
-                 "FROM persona p " +
-                 "INNER JOIN empleado e ON p.id = e.id_empleado";
+        List<Empleado> lista = new ArrayList<>();
+        // con p.* obtengo el ID de la tabla persona
+        String sql = "SELECT p.*, e.cargo, e.salario, e.codigo " +
+                     "FROM persona p " +
+                     "INNER JOIN empleado e ON p.id = e.id_empleado";
 
-    try (Statement st = connection.createStatement();
-         ResultSet rs = st.executeQuery(sql)) {
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
 
-        while (rs.next()) {
-            Empleado emp = PersonaFactory.crearEmpleado(
-                rs.getString("nombre"),
-                rs.getString("tipo_identificacion"),
-                rs.getInt("identificacion"),
-                rs.getString("email"),
-                rs.getInt("telefono"),
-                rs.getString("sexo"),
-                rs.getString("direccion"),
-                rs.getString("cargo"),
-                rs.getDouble("salario"),
-                rs.getInt("codigo")
-            );
-            lista.add(emp);
+            while (rs.next()) {
+                Empleado emp = PersonaFactory.crearEmpleado(
+                    rs.getString("nombre"),
+                    rs.getString("tipo_identificacion"),
+                    rs.getInt("identificacion"),
+                    rs.getString("email"),
+                    rs.getInt("telefono"),
+                    rs.getString("sexo"),
+                    rs.getString("direccion"),
+                    rs.getString("cargo"),
+                    rs.getDouble("salario"),
+                    rs.getInt("codigo")
+                );             
+                emp.setId(rs.getInt("id"));                             
+                lista.add(emp);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al listar empleados: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.err.println("Error al listar empleados: " + e.getMessage());
+        return lista;
     }
-    return lista;
-}
 }

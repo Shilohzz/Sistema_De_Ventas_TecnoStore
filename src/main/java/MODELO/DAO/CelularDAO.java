@@ -76,6 +76,41 @@ public class CelularDAO {
     }
     
     
+    public Celular buscarPorId(int idABuscar) {
+     
+    String sql = "SELECT c.id, c.stock, c.precio, m.id AS id_m, m.sistema_op, m.gama, m.nombre_marca " +
+                 "FROM celulares c " +
+                 "INNER JOIN marca m ON c.marca = m.id " +
+                 "WHERE c.id = ?"; // <--- La clave es este filtro
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, idABuscar);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                 
+                Marca marca = new Marca(
+                    rs.getInt("id_m"),
+                    rs.getString("sistema_op"),
+                    rs.getString("gama"),
+                    rs.getString("nombre_marca")
+                );
+
+                return new Celular(
+                    rs.getInt("id"),
+                    rs.getDouble("precio"),
+                    rs.getInt("stock"),
+                    marca
+                );
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al buscar celular: " + e.getMessage());
+    }
+    return null;
+}
+    
+    
     public boolean actualizarStock(int idCelular, int cantidad) throws SQLException {
   
     String sql = "UPDATE celulares SET stock = stock + ? WHERE id = ?";

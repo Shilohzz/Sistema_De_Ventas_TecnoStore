@@ -16,4 +16,5 @@ public class Celular extends Producto {
     public Celular(int id, double precio, int stock, Marca marca) {
         super(id, precio, stock, marca);
     }
+    
 }

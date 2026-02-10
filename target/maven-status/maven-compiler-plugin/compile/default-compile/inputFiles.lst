@@ -1,5 +1,6 @@
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\com\mycompany\tecno_store\TECNO_STORE.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\CONTROLADOR\Conexion.java
+C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\CONTROLADOR\VentaController.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Celular.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Cliente.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\DAO\CelularDAO.java
@@ -14,3 +15,4 @@ C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MOD
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\PersonaFactory.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Producto.java
 C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\MODELO\Venta.java
+C:\Users\baren\OneDrive\Documents\NetBeansProjects\TECNO_STORE\src\main\java\VISTA\MenuPrincipal.java

@@ -1,20 +1,27 @@
 package com.mycompany.tecno_store;
 
-import CONTROLADOR.Conexion;
-import MODELO.Celular;
-import MODELO.DAO.CelularDAO;
-import MODELO.DAO.VentaDAO;
-import MODELO.ItemVenta;
-import MODELO.Venta;
+import CONTROLADOR.VentaController;
+import VISTA.MenuPrincipal;
 import java.sql.Connection;
-import java.util.List;
 
 
 public class TECNO_STORE {
 
     public static void main(String[] args) {
-       Connection con = Conexion.getConexion();
+        // 1. Conexión
+        Connection conn = new CONTROLADOR.Conexion().getConexion();
         
+        if (conn != null) {
+            
+            VentaController controller = new VentaController(conn);
+            
+            
+            MenuPrincipal vista = new MenuPrincipal(controller);
+            
+            
+            vista.mostrarMenu();
+        }
+    }
     }
     
-}
+
