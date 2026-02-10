@@ -15,41 +15,40 @@ import java.util.List;
 public class Venta {
     private int id;
     private int idCliente;
-    private Date Fecha;
+    private int idEmpleado; 
+    private Date fecha;
+    private double vTotal; 
     private List<ItemVenta> items;
-    private double totalNeto;
-    private double totalIva;
-    private double totalFinal;
 
-    // Constructor para una nueva venta
-    public Venta(int idCliente) {
+    
+    // Constructor para iniciar una venta
+    public Venta(int idCliente, int idEmpleado) {
         this.idCliente = idCliente;
-        this.Fecha = new Date();
+        this.idEmpleado = idEmpleado;
+        this.fecha = new Date();
         this.items = new ArrayList<>();
-        this.totalNeto = 0;
+        this.vTotal = 0;
     }
 
-    // Este método lo uso para agregar productos y calcular los totales
+    // Método para agregar productos y actualizar el valor total
     public void agregarItem(ItemVenta item) {
         this.items.add(item);
-        calcularTotales();
+        calcularVTotal();
     }
 
-    // Este método lo uso para agregar productos y recalcular totales
-    private void calcularTotales() {
-        this.totalNeto = 0;
-        for (ItemVenta item : items) {
-            this.totalNeto += item.getSubtotal();
-        }
-        this.totalIva = this.totalNeto * 0.19;
-        this.totalFinal = this.totalNeto + this.totalIva;
+    private void calcularVTotal() {
+        // Sumo los subtotales de cada item usando Streams
+        this.vTotal = items.stream()
+                          .mapToDouble(ItemVenta::getSubtotal) // Le pido que tome solo el subTotal que haya en cada item dentro de ItemVenta
+                          .sum();
     }
 
-    public double getTotalFinal() {
-        return totalFinal;
-    }
-
-    public List<ItemVenta> getItems() {
-        return items;
-    }
+    // Getters necesarios para el DAO
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public int getIdCliente() { return idCliente; }
+    public int getIdEmpleado() { return idEmpleado; }
+    public Date getFecha() { return fecha; }
+    public double getVTotal() { return vTotal; }
+    public List<ItemVenta> getItems() { return items; }
 }

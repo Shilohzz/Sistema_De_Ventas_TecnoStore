@@ -10,29 +10,21 @@ package MODELO;
  */
 public class ItemVenta {
 
-    private int idCelular;
-    private String modeloCelular;
+   private int id;  
+    private Celular celular; // Atributo de tipo clase para poder acceder a los datos completos del celular 
     private int cantidad;
-    private double precioUnitario;
     private double subtotal;
 
-    public ItemVenta(int idCelular, String modeloCelular, int cantidad, double precioUnitario) {
-        this.idCelular = idCelular;
-        this.modeloCelular = modeloCelular;
+    // Constructor para nuevos items
+    public ItemVenta(Celular celular, int cantidad) {
+        this.celular = celular;
         this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = cantidad * precioUnitario;
+        this.subtotal = celular.getPrecio() * cantidad;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
+     
+    public Celular getCelular() { return celular; }
+    public int getCantidad() { return cantidad; }
+    public double getSubtotal() { return subtotal; }
 
-    public double getidCelular() {
-        return idCelular;
-    }
-
-    public double getSubtotal() {
-        return subtotal;
-    }
 }

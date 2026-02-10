@@ -14,7 +14,6 @@ public class Celular extends Producto {
     }
 
     public Celular(int id, double precio, int stock, Marca marca) {
-        // Enviamos los datos al constructor del padre (Producto)
         super(id, precio, stock, marca);
     }
 }

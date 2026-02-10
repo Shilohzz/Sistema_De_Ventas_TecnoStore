@@ -27,15 +27,17 @@ public class ClienteDAO {
     }
 
     public boolean registrarCliente(Cliente cliente) {
-        if (this.connection == null) {
-            return false;
-        }
-        String sqlPersona = "INSERT INTO persona (nombre, tipo_identificacion, identificacion, email, telefono, sexo, direccion) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        String sqlCliente = "INSERT INTO cliente (id_cliente) VALUES (?)";
+        if (this.connection == null) return false;
+    
+    String sqlPersona = "INSERT INTO persona (nombre, tipo_identificacion, identificacion, email, telefono, sexo, direccion) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sqlCliente = "INSERT INTO cliente (id_cliente) VALUES (?)";
 
-        try {
-            connection.setAutoCommit(false);
-            PreparedStatement psPersona = connection.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS);
+    
+    try {
+        connection.setAutoCommit(false);
+        
+        int idGenerado = 0;
+        try (PreparedStatement psPersona = connection.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS)) {
             psPersona.setString(1, cliente.getNombre());
             psPersona.setString(2, cliente.getTipo_identificacion());
             psPersona.setInt(3, cliente.getIdentificacion());
@@ -45,23 +47,24 @@ public class ClienteDAO {
             psPersona.setString(7, cliente.getDireccion());
             psPersona.executeUpdate();
 
-            ResultSet rs = psPersona.getGeneratedKeys();
-            int idGenerado = rs.next() ? rs.getInt(1) : 0;
+            try (ResultSet rs = psPersona.getGeneratedKeys()) {
+                if (rs.next()) idGenerado = rs.getInt(1);
+            }
+        }
 
-            PreparedStatement psCliente = connection.prepareStatement(sqlCliente);
+        try (PreparedStatement psCliente = connection.prepareStatement(sqlCliente)) {
             psCliente.setInt(1, idGenerado);
             psCliente.executeUpdate();
-
-            connection.commit();
-            return true;
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            return false;
         }
+
+        connection.commit();
+        return true;
+    } catch (SQLException e) {
+        try { connection.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        return false;
+    } finally {
+        try { connection.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
+    }
     }
 
     public List<Cliente> obtenerTodos() {

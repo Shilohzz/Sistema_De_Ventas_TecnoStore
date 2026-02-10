@@ -1,4 +1,5 @@
 com\mycompany\tecno_store\TECNO_STORE.class
+MODELO\DAO\VentaDAO.class
 MODELO\Empleado.class
 MODELO\DAO\CelularDAO.class
 MODELO\Marca.class

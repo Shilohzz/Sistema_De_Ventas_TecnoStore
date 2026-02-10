@@ -27,10 +27,10 @@ public class CelularDAO {
 
     
     public boolean registrar(Celular cel) {
-        // Recordamos tus campos: id - marca (FK) - stock - precio
+        
         String sql = "INSERT INTO celulares (marca, stock, precio) VALUES (?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, cel.getMarca().getId()); // Guardamos el ID de la marca
+            ps.setInt(1, cel.getMarca().getId()); 
             ps.setInt(2, cel.getStock());
             ps.setDouble(3, cel.getPrecio());
             return ps.executeUpdate() > 0;
@@ -73,5 +73,30 @@ public class CelularDAO {
             System.err.println("Error al listar celulares: " + e.getMessage());
         }
         return lista;
+    }
+    
+    
+    public boolean actualizarStock(int idCelular, int cantidad) throws SQLException {
+  
+    String sql = "UPDATE celulares SET stock = stock + ? WHERE id = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, cantidad);
+        ps.setInt(2, idCelular);
+        return ps.executeUpdate() > 0;
+    }
+}
+
+
+    public int consultarStock(int id) {
+        String sql = "SELECT stock FROM celulares WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("stock");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al consultar stock: " + e.getMessage());
+        }
+        return -1; 
     }
 }
