@@ -18,6 +18,7 @@ import java.util.Scanner;
  * @author baren
  */
 public class MenuPrincipal {
+
     private Scanner sc = new Scanner(System.in);
     private VentaController controller;
 
@@ -26,78 +27,91 @@ public class MenuPrincipal {
     }
 
     public void mostrarMenu() {
-    int opcion = 0;
-    do {
-        System.out.println("\n--- TECNO_STORE: GESTIÓN INTEGRAL ---");
-        System.out.println("1. Ver Catalogo de Celulares");
-        System.out.println("2. Registrar Nueva Venta");
-        System.out.println("3. Registrar Nuevo Cliente");
-        System.out.println("4. Ver Lista de Clientes");    
-        System.out.println("5. Ver Lista de Empleados");   
-        System.out.println("6. Salir");
-        System.out.print("Seleccione: ");
-        
-        opcion = sc.nextInt();
-        sc.nextLine();
+        int opcion = 0;
+        do {
+            System.out.println("\n--- TECNO_STORE: GESTIÓN INTEGRAL ---");
+            System.out.println("1. Ver Catalogo de Celulares");
+            System.out.println("2. Registrar Nueva Venta");
+            System.out.println("3. Registrar Nuevo Cliente");
+            System.out.println("4. Ver Lista de Clientes");
+            System.out.println("5. Ver Lista de Empleados");
+            System.out.println("6. Registrar Empleado");
+            System.out.println("7. Cambiar Estado Empleado");
+            System.out.println("8. Salir");
+            System.out.print("Seleccione: ");
 
-        switch (opcion) {
-            case 1 -> mostrarCatalogo();
-            case 2 -> procesoVenta();
-            case 3 -> menuRegistroCliente();
-            case 4 -> verClientesRegistrados();
-            case 5 -> verEmpleadosRegistrados();
-            case 6 -> System.out.println("Saliendo...");
-            default -> System.out.println("Opcion no reconocida.");
-        }
-    } while (opcion != 6);
-}
-    
+            opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcion) {
+                case 1 ->
+                    mostrarCatalogo();
+                case 2 ->
+                    procesoVenta();
+                case 3 ->
+                    menuRegistroCliente();
+                case 4 ->
+                    verClientesRegistrados();
+                case 5 ->
+                    verEmpleadosRegistrados();
+                case 6 ->
+                    menuRegistroEmpleado();
+                case 7 ->
+                    menuCambiarEstadoEmpleado();
+                case 8 ->
+                    System.out.println("Saliendo...");
+                default ->
+                    System.out.println("Opcion no reconocida.");
+            }
+        } while (opcion != 8);
+    }
+
     private void verClientesRegistrados() {
-    System.out.println("\n--- LISTADO DE CLIENTES ---");
-    System.out.println("1. ID \t 2. NOMBRE \t 3. IDENTIFICACION \t 4. EMAIL");
-    
-    List<Cliente> clientes = controller.getClientes();
-    
-    if (clientes.isEmpty()) {
-        System.out.println("No hay clientes registrados.");
-    } else {
-        
-        clientes.stream().forEach(c -> {
-            System.out.println("----------------------------------------------------------------\n"+c.getId() + " \t " + 
-                               c.getNombre() + " \t " + 
-                               c.getIdentificacion() + " \t " + 
-                               c.getEmail() + "\n"+ "----------------------------------------------------------------");
-        });
-    }
-}
+        System.out.println("\n--- LISTADO DE CLIENTES ---");
+        System.out.println("1. ID \t 2. NOMBRE \t 3. IDENTIFICACION \t 4. EMAIL");
 
-private void verEmpleadosRegistrados() {
-    System.out.println("\n--- LISTADO DE EMPLEADOS ---");
-    System.out.println("ID \t NOMBRE \t CARGO \t SALARIO");
-    
-    List<Empleado> empleados = controller.getEmpleados();
-    
-    if (empleados.isEmpty()) {
-        System.out.println("No hay empleados registrados.");
-    } else {
-        empleados.stream().forEach(e -> {
-            System.out.println("----------------------------------------------------------------\n"+e.getId() + " \t " + 
-                               e.getNombre() + " \t " + 
-                               e.getCargo() + " \t $" + 
-                               e.getSalario()+ "\n"+ "----------------------------------------------------------------");
-        });
+        List<Cliente> clientes = controller.getClientes();
+
+        if (clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados.");
+        } else {
+
+            clientes.stream().forEach(c -> {
+                System.out.println("----------------------------------------------------------------\n" + c.getId() + " \t "
+                        + c.getNombre() + " \t "
+                        + c.getIdentificacion() + " \t "
+                        + c.getEmail() + "\n" + "----------------------------------------------------------------");
+            });
+        }
     }
-}
+
+    private void verEmpleadosRegistrados() {
+        System.out.println("\n--- LISTADO DE EMPLEADOS ---");
+        System.out.println("ID \t NOMBRE \t CARGO \t SALARIO");
+
+        List<Empleado> empleados = controller.getEmpleados();
+
+        if (empleados.isEmpty()) {
+            System.out.println("No hay empleados registrados.");
+        } else {
+            empleados.stream().forEach(e -> {
+                System.out.println("----------------------------------------------------------------\n" + e.getId() + " \t "
+                        + e.getNombre() + " \t "
+                        + e.getCargo() + " \t $"
+                        + e.getSalario() + "\n" + "----------------------------------------------------------------");
+            });
+        }
+    }
 
     private void mostrarCatalogo() {
-    System.out.println("\nID \t MARCA \t PRECIO \t STOCK");
-    controller.getCatalogo().stream().forEach(c -> {
-        System.out.println(c.getId() + " \t " + 
-                           c.getMarca().getNombre_marca() + " \t $" + 
-                           c.getPrecio() + " \t " + 
-                           c.getStock());
-    });
-}
+        System.out.println("\nID \t MARCA \t PRECIO \t STOCK");
+        controller.getCatalogo().stream().forEach(c -> {
+            System.out.println(c.getId() + " \t "
+                    + c.getMarca().getNombre_marca() + " \t $"
+                    + c.getPrecio() + " \t "
+                    + c.getStock());
+        });
+    }
 
     private void procesoVenta() {
         System.out.println("\n--- SELECCION DE CLIENTE ---");
@@ -125,7 +139,7 @@ private void verEmpleadosRegistrados() {
             System.out.print("\nIngrese ID del Celular a vender: ");
             int idCel = sc.nextInt();
             Celular cel = controller.buscarCelularPorId(idCel);
-            
+
             if (cel != null) {
                 System.out.print("Cantidad (Max " + cel.getStock() + "): ");
                 int cant = sc.nextInt();
@@ -138,7 +152,7 @@ private void verEmpleadosRegistrados() {
             } else {
                 System.out.println("Celular no encontrado.");
             }
-            
+
             System.out.print("¿Desea agregar otro producto? (s/n): ");
             continuar = sc.next();
         } while (continuar.equalsIgnoreCase("s"));
@@ -156,50 +170,104 @@ private void verEmpleadosRegistrados() {
             System.out.println("Venta cancelada.");
         }
     }
-    private void menuRegistroCliente() {
-    System.out.println("\n--- REGISTRO DE NUEVO CLIENTE ---");
-    System.out.print("Nombre completo: ");
-    String nombre = sc.nextLine();
-    
-    System.out.print("Tipo Identificacion (CC/TI): ");
-    String tipoId = sc.next();
-    
-    System.out.print("Número Identificacion: ");
-    int iden = sc.nextInt();
-    sc.nextLine();
 
-    String email;
-    while (true) {
-        System.out.print("Correo electronico (@gmail.com o @mail.com): ");
-        email = sc.nextLine();
-        
-        // Valido el @mail
-        if (email.contains("@gmail.com") || email.contains("@mail.com")) {
-            break; 
+    private void menuRegistroCliente() {
+        System.out.println("\n--- REGISTRO DE NUEVO CLIENTE ---");
+        System.out.print("Nombre completo: ");
+        String nombre = sc.nextLine();
+
+        System.out.print("Tipo Identificacion (CC/TI): ");
+        String tipoId = sc.next();
+
+        System.out.print("Número Identificacion: ");
+        int iden = sc.nextInt();
+        sc.nextLine();
+
+        String email;
+        while (true) {
+            System.out.print("Correo electronico (@gmail.com o @mail.com): ");
+            email = sc.nextLine();
+
+            // Valido el @mail
+            if (email.contains("@gmail.com") || email.contains("@mail.com")) {
+                break;
+            } else {
+                System.out.println("Error. Correo electronico no reconocido.");
+            }
+        }
+
+        System.out.print("Telefono: ");
+        int tel = sc.nextInt();
+        sc.nextLine(); // Limpio el bufer porque me daba error búfer
+
+        System.out.print("Sexo (Femenino/Masculino/Otro): ");
+        String sexo = sc.nextLine();
+
+        System.out.print("Dirección: ");
+        String dir = sc.nextLine();
+
+        // Creo un objeto
+        Cliente nuevo = MODELO.PersonaFactory.crearCliente(nombre, tipoId, iden, email, tel, sexo, dir);
+
+        if (controller.registrarNuevoCliente(nuevo)) {
+            System.out.println("Cliente registrado con correctamente.");
         } else {
-            System.out.println("Error. Correo electronico no reconocido.");
+            System.out.println("Error al registrar el cliente.");
         }
     }
 
-    System.out.print("Telefono: ");
-    int tel = sc.nextInt();
-    sc.nextLine(); // Limpio el bufer porque me daba error búfer
-    
-    System.out.print("Sexo (Femenino/Masculino/Otro): ");
-    String sexo = sc.nextLine();
-    
-    System.out.print("Dirección: ");
-    String dir = sc.nextLine();
+    private void menuRegistroEmpleado() {
+        System.out.println("\n--- REGISTRO DE EMPLEADO ---");
+        System.out.print("Nombre: ");
+        String nom = sc.nextLine();
+        System.out.print("Tipo ID (CC/TI): ");
+        String tipoId = sc.next();
+        System.out.print("Identificación: ");
+        int iden = sc.nextInt();
+        sc.nextLine(); // Bufer
 
-    // Usamos el Factory para crear el objeto
-    Cliente nuevo = MODELO.PersonaFactory.crearCliente(nombre, tipoId, iden, email, tel, sexo, dir);
+        String correo;
+        while (true) {
+            System.out.print("Correo (@gmail.com / @mail.com): ");
+            correo = sc.nextLine();
+            if (correo.contains("@gmail.com") || correo.contains("@mail.com")) {
+                break;
+            }
+            System.out.println("Formato no válido.");
+        }
 
-    if (controller.registrarNuevoCliente(nuevo)) {
-        System.out.println("Cliente registrado con correctamente.");
-    } else {
-        System.out.println("Error al registrar el cliente.");
+        System.out.print("Cargo: ");
+        String cargo = sc.nextLine();
+        System.out.print("Salario: ");
+        double sal = sc.nextDouble();
+        System.out.print("Código Interno: ");
+        int cod = sc.nextInt();
+        sc.nextLine();
+
+        Empleado nuevo = MODELO.PersonaFactory.crearEmpleado(nom, tipoId, iden, correo, 0, "Otro", "Sede Central", cargo, sal, cod);
+
+        if (controller.registrarNuevoEmpleado(nuevo)) {
+            System.out.println("Empleado registrado.");
+        }
+
     }
-}
-}
 
+    private void menuCambiarEstadoEmpleado() {
+        System.out.println("\n--- CAMBIAR ESTADO DE EMPLEADO ---");
+        // Busco el id, nombre y estado del empleado
+        controller.getEmpleados().stream()
+                .forEach(e -> System.out.println(e.getId() + " | " + e.getNombre() + " | " + e.getCargo()));
 
+        System.out.print("ID del empleado a modificar: ");
+        int id = sc.nextInt();
+        System.out.print("Nuevo estado (ACTIVO/INACTIVO): ");
+        String estado = sc.next().toUpperCase();
+
+        if (controller.actualizarEstadoEmpleado(id, estado)) {
+            System.out.println("Estado actualizado correctamente.");
+        } else {
+            System.out.println("No se pudo actualizar.");
+        }
+    }
+
+}
