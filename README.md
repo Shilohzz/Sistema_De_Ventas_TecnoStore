@@ -12,7 +12,7 @@ La aplicación centraliza las operaciones de venta validando la existencia de pr
 * **Herencia en Base de Datos:** Uso de una tabla base (Persona) relacionada mediante llaves foráneas con tablas especializadas (Cliente, Empleado).
 
 ## Modelo de Base de Datos (SQL)
-El sistema utiliza el siguiente esquema relacional:
+El sistema utiliza el siguiente esquema:
 
 ```sql
 CREATE TABLE PERSONA (

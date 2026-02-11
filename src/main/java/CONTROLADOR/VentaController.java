@@ -60,5 +60,12 @@ public class VentaController {
         return ventaDAO.realizarVentaCompleta(venta);
     }
     
-    
+    public boolean registrarNuevoEmpleado(Empleado emp) {
+    return empleadoDAO.registrarEmpleado(emp);
+}
+
+    public boolean actualizarEstadoEmpleado(int id, String nuevoEstado) {
+        // Este método lo crearemos ahora en el DAO
+        return empleadoDAO.cambiarEstado(id, nuevoEstado);
+    }
 }
