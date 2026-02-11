@@ -20,6 +20,7 @@ import java.util.List;
  * @author baren
  */
 public class VentaController {
+
     private CelularDAO celularDAO;
     private VentaDAO ventaDAO;
     private ClienteDAO clienteDAO;
@@ -32,24 +33,30 @@ public class VentaController {
         this.empleadoDAO = new EmpleadoDAO(conn);
     }
 
-    public List<Celular> getCatalogo() { 
-        return celularDAO.obtenerTodos(); 
+    public boolean registrarNuevoCliente(Cliente cliente) {
+        return clienteDAO.registrarCliente(cliente);
     }
-    
-    public List<Cliente> getClientes() { 
-        return clienteDAO.obtenerTodos(); 
+
+    public List<Celular> getCatalogo() {
+        return celularDAO.obtenerTodos();
     }
-    
-    public List<Empleado> getEmpleados() { 
-        return empleadoDAO.obtenerTodos(); 
+
+    public List<Cliente> getClientes() {
+        return clienteDAO.obtenerTodos();
     }
-    
+
+    public List<Empleado> getEmpleados() {
+        return empleadoDAO.obtenerTodos();
+    }
+
     public Celular buscarCelularPorId(int id) {
         return celularDAO.buscarPorId(id);
     }
 
     public boolean realizarVenta(Venta venta) {
-        if (venta.getItems().isEmpty()) return false;
+        if (venta.getItems().isEmpty()) {
+            return false;
+        }
         return ventaDAO.realizarVentaCompleta(venta);
     }
 }

@@ -18,7 +18,8 @@ import java.sql.Timestamp;
  * @author baren
  */
 public class VentaDAO {
-   private Connection connection;
+
+    private Connection connection;
 
     public VentaDAO(Connection connection) {
         this.connection = connection;
@@ -28,7 +29,7 @@ public class VentaDAO {
         String sqlVenta = "INSERT INTO venta (id_cliente, id_empleado, fecha, V_Total) VALUES (?, ?, ?, ?)"; // Insertar Venta
         String sqlDetalle = "INSERT INTO detalle_venta (id_venta, id_celular, cantidad, subtotal) VALUES (?, ?, ?, ?)"; // Insertar detalle de venta
         String sqlStock = "UPDATE celulares SET stock = stock - ? WHERE id = ?"; // Actualizar stock
-        
+
         try {
             connection.setAutoCommit(false);
 
@@ -47,26 +48,23 @@ public class VentaDAO {
                 }
             }
 
-            
-            try (PreparedStatement psDetalle = connection.prepareStatement(sqlDetalle);
-                 PreparedStatement psStock = connection.prepareStatement(sqlStock)) {
-                
+            try (PreparedStatement psDetalle = connection.prepareStatement(sqlDetalle); PreparedStatement psStock = connection.prepareStatement(sqlStock)) {
+
                 for (ItemVenta item : venta.getItems()) {
-                     
-                    psDetalle.setInt(1, idVentaGenerado); 
+
+                    psDetalle.setInt(1, idVentaGenerado);
                     psDetalle.setInt(2, item.getCelular().getId());
                     psDetalle.setInt(3, item.getCantidad());
                     psDetalle.setDouble(4, item.getSubtotal());
-                    psDetalle.addBatch(); 
+                    psDetalle.addBatch();
 
-                    
                     psStock.setInt(1, item.getCantidad());
                     psStock.setInt(2, item.getCelular().getId());
                     psStock.addBatch();
                 }
-                
-                psDetalle.executeBatch(); 
-                psStock.executeBatch(); 
+
+                psDetalle.executeBatch();
+                psStock.executeBatch();
             }
 
             connection.commit();
@@ -74,13 +72,18 @@ public class VentaDAO {
 
         } catch (SQLException e) {
             try {
-                connection.rollback(); 
+                connection.rollback();
                 System.err.println("Venta cancelada, Error: " + e.getMessage());
-            } catch (SQLException ex) { ex.printStackTrace(); }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             return false;
         } finally {
-            try { connection.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
-

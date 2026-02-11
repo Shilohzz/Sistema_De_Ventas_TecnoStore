@@ -19,14 +19,17 @@ import java.util.List;
  * @author baren
  */
 public class EmpleadoDAO {
+
     private Connection connection;
-    
+
     public EmpleadoDAO(Connection connection) {
         this.connection = connection;
     }
 
     public boolean registrarEmpleado(Empleado emp) {
-        if (this.connection == null) return false;
+        if (this.connection == null) {
+            return false;
+        }
 
         String sqlPersona = "INSERT INTO persona (nombre, tipo_identificacion, identificacion, email, telefono, sexo, direccion) VALUES (?, ?, ?, ?, ?, ?, ?)";
         String sqlEmpleado = "INSERT INTO empleado (id_empleado, cargo, salario, codigo) VALUES (?, ?, ?, ?)";
@@ -35,7 +38,7 @@ public class EmpleadoDAO {
             connection.setAutoCommit(false);
 
             int idGenerado = 0;
-            
+
             try (PreparedStatement psPersona = connection.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS)) {
                 psPersona.setString(1, emp.getNombre());
                 psPersona.setString(2, emp.getTipo_identificacion());
@@ -53,7 +56,6 @@ public class EmpleadoDAO {
                 }
             }
 
-             
             try (PreparedStatement psEmpleado = connection.prepareStatement(sqlEmpleado)) {
                 psEmpleado.setInt(1, idGenerado);
                 psEmpleado.setString(2, emp.getCargo());
@@ -65,46 +67,45 @@ public class EmpleadoDAO {
             connection.commit();
             return true;
         } catch (SQLException e) {
-            try { 
-                connection.rollback(); 
-            } catch (SQLException ex) { 
-                ex.printStackTrace(); 
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
             System.err.println("Error al registrar empleado: " + e.getMessage());
             return false;
         } finally {
-            try { 
-                connection.setAutoCommit(true); 
-            } catch (SQLException e) { 
-                e.printStackTrace(); 
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
-    
+
     public List<Empleado> obtenerTodos() {
         List<Empleado> lista = new ArrayList<>();
         // con p.* obtengo el ID de la tabla persona
-        String sql = "SELECT p.*, e.cargo, e.salario, e.codigo " +
-                     "FROM persona p " +
-                     "INNER JOIN empleado e ON p.id = e.id_empleado";
+        String sql = "SELECT p.*, e.cargo, e.salario, e.codigo "
+                + "FROM persona p "
+                + "INNER JOIN empleado e ON p.id = e.id_empleado";
 
-        try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
                 Empleado emp = PersonaFactory.crearEmpleado(
-                    rs.getString("nombre"),
-                    rs.getString("tipo_identificacion"),
-                    rs.getInt("identificacion"),
-                    rs.getString("email"),
-                    rs.getInt("telefono"),
-                    rs.getString("sexo"),
-                    rs.getString("direccion"),
-                    rs.getString("cargo"),
-                    rs.getDouble("salario"),
-                    rs.getInt("codigo")
-                );             
-                emp.setId(rs.getInt("id"));                             
+                        rs.getString("nombre"),
+                        rs.getString("tipo_identificacion"),
+                        rs.getInt("identificacion"),
+                        rs.getString("email"),
+                        rs.getInt("telefono"),
+                        rs.getString("sexo"),
+                        rs.getString("direccion"),
+                        rs.getString("cargo"),
+                        rs.getDouble("salario"),
+                        rs.getInt("codigo")
+                );
+                emp.setId(rs.getInt("id"));
                 lista.add(emp);
             }
         } catch (SQLException e) {
