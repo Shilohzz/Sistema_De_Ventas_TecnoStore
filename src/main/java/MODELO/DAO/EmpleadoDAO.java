@@ -113,4 +113,22 @@ public class EmpleadoDAO {
         }
         return lista;
     }
+    
+    
+    public boolean cambiarEstado(int id, String nuevoEstado) {
+        String sql = "UPDATE empleado SET estado = ? WHERE id_empleado = ?";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nuevoEstado);
+            ps.setInt(2, id);
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0; // Si es mayor a 0, significa que ya se actualizo
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar estado: " + e.getMessage());
+            return false;
+        }
+    }
 }
+    
+
