@@ -32,6 +32,12 @@ public class VentaController {
         this.clienteDAO = new ClienteDAO(conn);
         this.empleadoDAO = new EmpleadoDAO(conn);
     }
+    
+    
+    public List<Celular> reporteStockBajo (int limite){
+        
+        return celularDAO.obtenerTodos().stream().filter(c -> c.getStock() <= limite).toList();
+    }
 
     public boolean registrarNuevoCliente(Cliente cliente) {
         return clienteDAO.registrarCliente(cliente);
