@@ -26,6 +26,28 @@ public class MenuPrincipal {
         this.controller = controller;
     }
 
+    
+    private void mostrarReporteStockBajo(){
+        int limiteAlerta = 5;
+            System.out.println("\n--- REPORTE DE STOCK BAJO ---");
+        System.out.println("ID \t MARCA \t STOCK ACTUAL");
+        System.out.println("------------------------------------------------------------");
+
+        List<Celular> criticos = controller.reporteStockBajo(limiteAlerta);
+
+        if (criticos.isEmpty()) {
+            System.out.println("El inventario esta por encima del stock mínimo.");
+        } else {
+
+            criticos.stream().forEach(c -> {
+                System.out.println(c.getId() + " \t " +
+                                   c.getMarca().getNombre_marca() + " \t " + 
+                                   c.getStock());
+            });
+            System.out.println("------------------------------------------------------------");
+        }
+    }
+    
     public void mostrarMenu() {
         int opcion = 0;
         do {
@@ -36,8 +58,9 @@ public class MenuPrincipal {
             System.out.println("4. Ver Lista de Clientes");
             System.out.println("5. Ver Lista de Empleados");
             System.out.println("6. Registrar Empleado");
-            System.out.println("7. Cambiar Estado Empleado");
-            System.out.println("8. Salir");
+            System.out.println("7. Reporte de Stock bajo");
+            System.out.println("8. Cambiar Estado Empleado");
+            System.out.println("9. Salir");
             System.out.print("Seleccione: ");
 
             opcion = sc.nextInt();
@@ -57,13 +80,15 @@ public class MenuPrincipal {
                 case 6 ->
                     menuRegistroEmpleado();
                 case 7 ->
-                    menuCambiarEstadoEmpleado();
+                    mostrarReporteStockBajo();
                 case 8 ->
+                    menuCambiarEstadoEmpleado();
+                case 9 -> 
                     System.out.println("Saliendo...");
                 default ->
                     System.out.println("Opcion no reconocida.");
             }
-        } while (opcion != 8);
+        } while (opcion != 9);
     }
 
     private void verClientesRegistrados() {
@@ -269,5 +294,7 @@ public class MenuPrincipal {
             System.out.println("No se pudo actualizar.");
         }
     }
+    
+    
 
 }
